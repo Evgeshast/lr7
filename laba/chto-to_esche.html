@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <style type="text/css">
+            body{
+                background: url(pic.jpg);
+                background-size: 100%;
+            }
+            button.new {
+                background: -moz-linear-gradient(#00BBD6, #EBFFFF);
+                background: -webkit-gradient(linear, 0 0, 0 100%, from(#00BBD6), to(#EBFFFF));
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00BBD6', endColorstr='#EBFFFF');
+                padding: 3px 7px;
+                color: #333;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                border: 1px solid #666;
+                margin: auto;
+                position: relative;
+                left: 500px;
+            }
+            TABLE {
+                width: 300px; /* Ширина таблицы */
+                color: darkblue;
+                background: #EBFFFF;
+                border-collapse: collapse; /* Убираем двойные линии между ячейками */
+                margin: auto;
+            }
+            TD, TH {
+                padding: 3px; /* Поля вокруг содержимого таблицы */
+                border: 1px solid maroon; /* Параметры рамки */
+                text-align: left; /* Выравнивание по левому краю */
+            }
+        </style>
+        <meta charset="utf-8">
+        <title>Grade record</title>
+    </head>
+    <body>
+
+    <table id="doc">
+    <tr><th>№</th><th>Student</th><th>Grade</th></tr>
+    </table>
+    <p><button onclick="loadXMLDoc()" class="new">Open table</button></p>
+    <p><button onclick="ll()" class="new">Transform</button></p>
+        <script type="text/javascript">
+
+            function loadXMLDoc() {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        myFunction(this);
+                    }
+                };
+                xmlhttp.open("GET", "xmldata.xml" , true);
+                xmlhttp.send();
+            }
+            function ll() {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        myf(this);
+                    }
+                };
+                xmlhttp.open("GET", "xmldata.xml" , true);
+                xmlhttp.send();
+            }
+
+            function myFunction(xml) {
+                var x, i, xmlDoc, table;
+                xmlDoc = xml.responseXML;
+                table = "<tr><th>№</th><th>Student</th><th>Grade</th></tr>";
+                x = xmlDoc.getElementsByTagName("gradeRecord");
+                console.log(x.length);
+                for (i = 0; i < x.length; i++) {
+                    var a = x[i].getElementsByTagName("grade")[0].childNodes[0].nodeValue;
+                    table += "<tr><td>" + (i+1) +
+                        "</td><td>"+
+                        x[i].getElementsByTagName("student")[0].childNodes[0].nodeValue +
+                        "</td><td>" +
+                        a +
+                        "</td></tr>";
+                }
+                document.getElementById("doc").innerHTML = table;
+            };
+
+            function myf(xml) {
+                var x, i, xmlDoc, table;
+                xmlDoc = xml.responseXML;
+                table = "<tr><th>№</th><th>Student</th><th>Grade</th></tr>";
+                x = xmlDoc.getElementsByTagName("gradeRecord");
+                for (i = 0; i < x.length; i++) {
+                    var a = x[i].getElementsByTagName("grade")[0].childNodes[0].nodeValue;
+                    if (a==4) {var a="good"};
+                    if (a==3) {var a="acceptable"};
+                    if (a==5) {var a="excellent"};
+                    table += "<tr><td>" + (i+1) +
+                        "</td><td>"+
+                        x[i].getElementsByTagName("student")[0].childNodes[0].nodeValue +
+                        "</td><td>" +
+                        a +
+                        "</td></tr>";
+                }
+                document.getElementById("doc").innerHTML = table;
+            };
+        </script>
+    </body>
+</html>
